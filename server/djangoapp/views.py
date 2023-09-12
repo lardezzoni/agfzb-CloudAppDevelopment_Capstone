@@ -15,7 +15,29 @@ logger = logging.getLogger(__name__)
 
 
 # Create your views here.
+def IndexView(request):
+    context={}
+    return render(request,'djangoapp/index.html', context)
 
+def AddReviewView(request):
+    context={}
+
+    return render(request,'djangoapp/add_review.html', context)
+
+def DealerDetailsView(request):
+    context={}
+
+    return render(request,'djangoapp/dealer_details.html', context)
+
+def RegistrationView(request):
+    context={}
+
+    return render(request,'djangoapp/registration.html', context)
+
+def AboutUsView(request):
+    context={
+    }
+    return render(request,'djangoapp/about.html', context)
 
 # Create an `about` view to render a static about page
 # def about(request):
