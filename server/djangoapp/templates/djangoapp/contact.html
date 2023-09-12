@@ -37,7 +37,7 @@
 
 </head>
 
-    <body class="d-flex flex-column h-100"style="background: url({{ MEDIA_URL }}images/car1.jpg)">
+<body class="d-flex flex-column h-100">  
     <!--Add a nav bar here -->
 
     <div id="navbar" style="background-color:#000000">
@@ -72,65 +72,45 @@
           </div>
         </div>
     </div>
-    <section class="position-relative">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6" >
-                    <div class="pr-3 mb-5 mb-lg-0col-md-12">
-                      <h1 style="height: 3cm;"></h1>
-                      <kbd>
-                        <h2 class="text-center text-white"style="height: 4cm;">About Us</h1>
-                            <div class="box" style="background-color: black;border: solid 1px #e0e0e0; 
-                           
-                            padding: 10px 5px;
-                            border-radius: 1px;
-                        
-                            text-align: center;
-                            display: flex;
-                            display: ms-flexbox;
-                            align-items: center;
-                            justify-content: center;
-                            -ms-flex-wrap: wrap;
-                            flex-wrap: wrap;">
-                            <div style="  font-size: 18px;
-                            font-weight: normal;
-                            font-style: normal;
-                            font-stretch: normal;
-                            line-height: 1.28;
-                            letter-spacing: -0.03px;
-  
-                            -ms-flex: 0 0 100%;
-                            flex: 0 0 100%;
-                            max-width: 100%;">
-                                 <p class="mb-5 text-white blockquote text-center">Welcome to Best Cars dealership, home to the best cars in North America. We sell domestic and imported cars at reasonable prices.</p>
-                            </div>
-                            </div>
-                          
-                        </kbd>
-                        
-                    </div>
-                </div>
+    <section>
+        <div class="container text-center text-md-start mt-5">
+            <div class="row mt-3">
+                <h1>Contact Us</h1>
 
             </div>
         </div>
+        <br/>
+        <br/>
+        <div class="container">
+            <div class="row">
+                <p>+1 801 923 92</p>
+                
+            </div>
+            <div class="row">
+                <p>email@company.com</p>
+            </div>
+        </div>
+
     </section>
+
+  
+       
     <footer class="footer mt-auto py-1" style="background-color: #000000;">
 
-      <div class="container">
-          <div class="row align-items-start">
-          <!-- Copyright -->
-           <div class="col-md-4 col-lg-3 col-xl-3 mt-4">
-              <!-- Links -->
-              <a class="text-uppercase text-white mt-4" href="{% url 'djangoapp:contact' %}">Contact</a>
+        <div class="container">
+            <div class="row align-items-start">
+            <!-- Copyright -->
+             <div class="col-md-4 col-lg-3 col-xl-3 mt-4">
+                <!-- Links -->
+                <a class="text-uppercase text-white mt-4" href="{% url 'djangoapp:contact' %}">Contact</a>
+              </div>
             </div>
-          </div>
-          <div class="text-center p-4">
-            © 2023 Copyright:
-            <a class="text-reset fw-bold" href="https://mdbootstrap.com/">MDBootstrap.com</a>
-          </div>
-          <!-- Copyright -->
-      </div>
-        </footer>
-      </body>
-
+            <div class="text-center p-4">
+              © 2023 Copyright:
+              <a class="text-reset fw-bold" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+            </div>
+            <!-- Copyright -->
+        </div>
+          </footer>
+        </body>
 </html>

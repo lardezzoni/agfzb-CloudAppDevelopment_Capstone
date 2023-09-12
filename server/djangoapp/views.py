@@ -39,6 +39,10 @@ def AboutUsView(request):
     }
     return render(request,'djangoapp/about.html', context)
 
+def ContactView(request):
+    context={}
+    return render(request,'djangoapp/contact.html', context)
+
 # Create an `about` view to render a static about page
 # def about(request):
 # ...
