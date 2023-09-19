@@ -37,7 +37,7 @@
 
 </head>
 
-    <body class="d-flex flex-column h-100"style="background: url({{ MEDIA_URL }}images/car1.jpg)">
+    <body class="d-flex flex-column h-100">
     <!--Add a nav bar here -->
 
     <div id="navbar" style="background-color:#000000">
@@ -81,7 +81,7 @@
                                 <div class="input-group w-75">
                                     <input type="text" class="form-control" placeholder="Username" name="username" >
                                     <input type="password" class="form-control" placeholder="Username" name="psw" >
-                                    <button class="btn btn-primary text-white" style="background-color: black; type="submit">Login</button>
+                                    <button class="btn btn-primary text-white" style="background-color: black;" type="submit">Login</button>
                                     <a class="btn btn-link text-white" href="{% url 'djangoapp:registration' %}">Sign Up</a>
                                 </div>
                             </form>
@@ -99,47 +99,26 @@
           </div>
         </div>
     </div>
-    <section class="position-relative">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6" >
-                    <div class="pr-3 mb-5 mb-lg-0col-md-12">
-                      <h1 style="height: 3cm;"></h1>
-                      <kbd>
-                        <h2 class="text-center text-white"style="height: 4cm;">Index</h1>
-                            <div class="box" style="background-color: black;border: solid 1px #e0e0e0; 
-                           
-                            padding: 10px 5px;
-                            border-radius: 1px;
-                        
-                            text-align: center;
-                            display: flex;
-                            display: ms-flexbox;
-                            align-items: center;
-                            justify-content: center;
-                            -ms-flex-wrap: wrap;
-                            flex-wrap: wrap;">
-                            <div style="  font-size: 18px;
-                            font-weight: normal;
-                            font-style: normal;
-                            font-stretch: normal;
-                            line-height: 1.28;
-                            letter-spacing: -0.03px;
-  
-                            -ms-flex: 0 0 100%;
-                            flex: 0 0 100%;
-                            max-width: 100%;">
-                                 <p class="mb-5 text-white blockquote text-center">This is the Index Page</p>
-                            </div>
-                            </div>
-                          
-                        </kbd>
-                        
-                    </div>
+    <section>
+        <!-- Stylize Login form -->
+        <form action="{% url 'djangoapp:login' %}" method="post">
+            {% csrf_token %}
+            <div class="container"> <!--Style root div with .container class -->
+                <h1>Login</h1>
+                <div class="form-group"> <!--Style second div with .form-group class -->
+                  <label for="username"><b>User Name</b></label>
+                  <input id="username" class = "form-control" type="text" placeholder="Enter User Name: " name="username" required> <!--Style input with .form-control class -->
+                  <label for="psw"><b>Password</b></label>
+                  <input id="psw" class = "form-control" type="password"  placeholder="Enter Password: " name="psw" required> <!--Style input with .form-control class -->
                 </div>
-
+                {% if message %}
+                  <div class="alert alert-warning"> <!--Style the message paragraph with .alert and .alert-warning class -->
+                    {{ message }}
+                  </div>
+                {% endif %}
+                <button class="btn btn-primary" type="submit">Login</button> <!--Style button with .btn and .btn-primary class -->
             </div>
-        </div>
+        </form>
     </section>
     <footer class="footer mt-auto py-1" style="background-color: #000000;">
 
@@ -157,6 +136,7 @@
           </div>
           <!-- Copyright -->
       </div>
+    
         </footer>
       </body>
 
