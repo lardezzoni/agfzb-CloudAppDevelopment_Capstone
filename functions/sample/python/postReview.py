@@ -1,14 +1,4 @@
-#
-#
-# main() will be run when you invoke this action
-#
-# @param Cloud Functions actions accept a single parameter, which must be a JSON object.
-#
-# @return The output of this action, which must be a JSON object.
-#
-#
-
-from ibmcloudant.cloudant_v1 import CloudantV1
+from ibmcloudant.cloudant_v1 import Document, CloudantV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 from ibm_cloud_sdk_core import ApiException
 import requests
@@ -30,13 +20,20 @@ def main(param_dict):
         authenticator = IAMAuthenticator('tSdkTinqoWWwBoyDMYVhRQFfwykt0vsrsYe-WIuaZbDr')
         service = CloudantV1(authenticator=authenticator)
         service.set_service_url('https://c36af5af-8fb7-43d5-8c43-4da3026125d8-bluemix.cloudantnosqldb.appdomain.cloud')
-        response = service.post_all_docs(
-            db='reviews',
-            include_docs=True,
-            limit=10
-        ).get_result()
+        review_doc = Document(
+             _id= "6ce15a14a432c1d6b1e6ad0a5b324508",
+             _rev= "1-6d3a916e140863cdb147048888d26051",
+             id= 88,
+             name= "Berkly Shepley",
+             dealership= 15,
+             review= "Total grid-enabled service-desk",
+             purchase= "true",
+             purchase_date = "07/11/2020",
+             car_make= "Audi",
+             car_model= "A6",
+             car_year= 2010)
 
-        print(response)
+        response = service.post_document(db='reviews', document=review_doc).get_result()
 
     except ApiException as ae:
       if ae.code == 412:
@@ -45,6 +42,6 @@ def main(param_dict):
 
     return {
         "status":200,
-        "body":response,
+        "body": "post completed",
         "content_type":'application/json',
     };
