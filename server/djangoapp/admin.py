@@ -1,16 +1,19 @@
 from django.contrib import admin
 # <HINT> Import any new Models here
-from .models import CarMake, CarModel
+from .models import CarMake, CarModel, CarDealer
 
 # <HINT> Register QuestionInline and ChoiceInline classes here
 class CarModelInLine(admin.StackedInline):
     model = CarModel
-    extra = 2
+    extra = 5
 
 class CarMakeInLine(admin.StackedInline):
     model = CarMake
     extra = 2
 
+class CarDealerInLine(admin.StackedInline):
+    model = CarDealer
+    extra = 9
 
 # Register your models here.
 class CarMakeAdmin(admin.ModelAdmin):

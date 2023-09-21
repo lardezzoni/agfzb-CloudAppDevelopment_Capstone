@@ -20,7 +20,7 @@ urlpatterns = [
 
     # path for logout
 
-    path(route='', view=views.IndexView, name='index'),
+    path(route='', view=views.get_dealerships, name='index'),
     path(route='addreview/', view=views.AddReviewView, name='addreview'),
     path(route='dealer_details/', view=views.DealerDetailsView, name='dealer_details'),
     path(route='registration/', view=views.registration_request, name='registration'),
@@ -28,7 +28,9 @@ urlpatterns = [
     path(route='contact/', view=views.ContactView, name='contact'),
     path(route='login/', view=views.LoginView, name='login'),
     path(route='logout/', view=views.logout_request, name='logout'),
-
+    path(route='dealer/<int:dealer_id>/', view=views.get_dealer_details, name='dealer_details'),
+    path(route='test/', view=views.get_test, name="test"),
+    path(route='dealer/<int:dealer_id>/addreview', view=views.add_review, name='dealer_review'),
     # path for dealer reviews view
 
     # path for add a review view
