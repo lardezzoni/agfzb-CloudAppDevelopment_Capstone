@@ -20,7 +20,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> 
     <meta charset="UTF-8">
-
+    <link rel="stylesheet" type="text/css" href="extensions/filter-control/bootstrap-table-filter-control.css">
+    <script src="extensions/filter-control/bootstrap-table-filter-control.js"></script>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   
@@ -104,7 +105,7 @@
             <div class="row">
                 <div class="col-lg-6" >
                     <div class="pr-3 mb-5 mb-lg-0col-md-12">
-                      <h1 style="height: 3cm;"></h1>
+                    <h1 style="height: 3cm;"></h1>
                       <kbd>
                         <h2 class="text-center text-white"style="height: 4cm;">Index</h1>
                             <div class="box" style="background-color: black;border: solid 1px #e0e0e0; 
@@ -118,18 +119,47 @@
                             align-items: center;
                             justify-content: center;
                             -ms-flex-wrap: wrap;
-                            flex-wrap: wrap;">
-                            <div style="  font-size: 18px;
-                            font-weight: normal;
-                            font-style: normal;
-                            font-stretch: normal;
-                            line-height: 1.28;
-                            letter-spacing: -0.03px;
-  
-                            -ms-flex: 0 0 100%;
-                            flex: 0 0 100%;
-                            max-width: 100%;">
-                                 <p class="mb-5 text-white blockquote text-center">This is the Index Page</p>
+                            flex-wrap: wrap;"> 
+                     <table class="table text-white" id="clients-table" data-filter-control="true"
+                                 data-toggle="table" 
+                                 data-show-toggle="true" 
+                                 data-cache="false" 
+                                 data-show-refresh="true"
+                                 data-escape="false"
+                                 > 
+                                 
+                            
+                                    <thead>
+                                        <tr>
+                                            <th data-field="id" data-filter-control="select">Id</th>
+                                            <th data-field="full_name" data-filter-control="select">Dealer Name</th>
+                                            <th data-field="city" data-filter-control="select">City</th>
+                                            <th data-field="address" data-filter-control="select">Address</th>
+                                            <th data-field="zip" data-filter-control="select">zip</th>
+                                            <th data-field="st" data-filter-control="select">state</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-white">
+
+                                     {% for dealer in dealership_list %}
+
+                                             <tr>
+                                                <td data-field="id"><a href="{% url 'djangoapp:dealer_details'dealer.id%"}>{{dealer.id}}</a></td>
+                                                <td data-field="full_name"><a href="{% url 'djangoapp:dealer_details'dealer.id%"}>{{dealer.full_name}}</a></td>
+                                                <td data-field="city"><a href="{% url 'djangoapp:dealer_details'dealer.id%"}>{{dealer.city}}</a></td>
+                                                <td data-field="address"><a href="{% url 'djangoapp:dealer_details'dealer.id%"}>{{dealer.address}}</a></td>
+                                                <td data-field="zip"><a href="{% url 'djangoapp:dealer_details'dealer.id%"}>{{dealer.zip}}</a></td>
+                                                <td data-field="st"><a href="{% url 'djangoapp:dealer_details'dealer.id%"}>{{dealer.st}}</a></td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                 </table>
+                                 <script>
+                                      $(function() {
+                                          $('#clients-table').bootstrapTable()
+                                     })
+                                  </script>
+
                             </div>
                             </div>
                           
