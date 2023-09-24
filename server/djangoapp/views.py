@@ -10,6 +10,8 @@ from django.contrib import messages
 from datetime import datetime
 from .restapis import get_request, get_reviews_from_cf, analyze_review_sentiments, post_request
 from .models import CarDealer, DealerReview
+from django.forms.models import model_to_dict
+
 import logging
 import json
 import requests
@@ -136,7 +138,7 @@ def get_dealerships(request):
         dealerships_list = get_dealers_from_cf(url)
         context = dict()
         url_rev= "https://us-south.functions.appdomain.cloud/api/v1/web/f24bc0b4-325b-4601-a262-9b9454e6bfb0/dealership-package/get-review"
-        context=get_reviews_from_cf(url_rev)
+        context['dealership_list']=dealerships_list
         # Concat all dealer's short name
         dealer_names = ' '.join([dealer.short_name for dealer in dealerships_list])
         # Return a list of dealer short name
@@ -145,22 +147,51 @@ def get_dealerships(request):
 def get_dealer_details(request, dealer_id):
     if request.method == "GET":
         url = "https://us-south.functions.appdomain.cloud/api/v1/web/f24bc0b4-325b-4601-a262-9b9454e6bfb0/dealership-package/get-review"
+        url_dealers = "https://us-south.functions.appdomain.cloud/api/v1/web/f24bc0b4-325b-4601-a262-9b9454e6bfb0/dealership-package/get-dealerships"
+
         # Get dealers from the URL
         reviews= get_reviews_from_cf(url)
+        dealerships_list = get_dealers_from_cf(url_dealers)
         # Concat all dealer's short name
-        review_names = ''
+        context = dict()  
+        context['dealership_list']=dealerships_list
+        context["reviews"]= reviews
+        iterate_dict = dict()
+        iterate_dict["reviews"] = []
+
+        test = dict()
         try:
             for review in reviews:
+                print(review)
                 if dealer_id == review.dealership:
-                   review_names = ''.join(review.review)
-                   review_names_sentiment= "".join(review.sentiment)
-                   review_final=review_names+" , "+review_names_sentiment
-                   return HttpResponse(review_final)
+                    
+                    print(type(review))
+                    #model_to_dict(review)
+                    
+                    iterate_dict["reviews"].append(review)
+                   
+
+
+            for dealer in dealerships_list:
+
+                if dealer_id == dealer.id:
+
+                    iterate_dict["id"] = dealer
+                    print(dealer.full_name)
+            
+            for iterate in iterate_dict["reviews"]:
+                print(iterate)
+            
+            #return HttpResponse(iterate_dict["id"])
+            return render(request, 'djangoapp/dealer_details.html', {'context':iterate_dict})
+
+
+
         except:
             if reviews == "Dealer don't exist":
                 return HttpResponse("Dealer don't exist")
             else:
-                return HttpResponse("error")
+                return render(request, 'djangoapp/dealer_details.html', context)
 
 # Create a `add_review` view to submit a review
 # def add_review(request, dealer_id):
@@ -203,6 +234,7 @@ def add_review(request, dealer_id):
               try:
                for review in reviews:
                    if dealer_id == review.dealership:
+                      print("dealer")
                       return HttpResponse("dealer already exists")
               except:
                   print(reviews)

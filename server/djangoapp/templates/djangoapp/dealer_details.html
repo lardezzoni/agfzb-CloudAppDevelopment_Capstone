@@ -104,17 +104,43 @@
         </div>
     </div>
     <section>
+        <br/>
+        <br/>
         <div class="container">
-            <div class="card-columns">
-                {% for dealer in dealership_list %}
+          <h1 class="text-white">{{context.id.full_name}}</h1>
+          <br/>
+            <div class="card-columns text-white">  
+                {% for review in context.reviews %}
 
-                    {% if reviews.id == dealer.id%}
-                        {% if reviews.sentiment is positive %}
-                            <p>positive</p>
-                            <a href="{% url 'djangoapp:dealer_details'dealer.id%"}>{{dealer.full_name}}</a>
-                        {% endif %}
-                        {% endif %}
-                            {% endfor %}
+                
+                    {%if review.sentiment == "neutral" %}
+                    <div class="col-sm-6">
+                        <img class="card-img-left mx-auto d-block img-fluid" src="{{MEDIA_URL}}/emoji/neutral.png" style="height: 50px; width: 50px;">
+    
+                    </div>
+                    {% elif review.sentiment == "positive" %}
+                    <div class="col-sm-6">
+                        <img class="card-img-left mx-auto d-block img-fluid" src="{{MEDIA_URL}}/emoji/positive.png" style="height: 50px; width: 50px;">
+    
+                    </div>
+                    {% elif review.sentiment == "negative" %}
+                    <div class="col-sm-6">
+                        <img class="card-img-left mx-auto d-block img-fluid" src="{{MEDIA_URL}}/emoji/negative.png" style="height: 50px; width: 50px;">
+    
+                    </div>
+                    {% endif %}
+                    <div class="col-sm-6">
+                        <div class="card-body-right">
+                            <h4 class="card-title text-white">{{review.car_model}}</h4>
+                            <h5 class="card-title text-white">{{review.car_make}}</h5>
+                            <h6 class="card-title text-white">{{review.car_year}}</h6>
+
+                            <p class="card-text text-white">{{review.review}}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+        
+                
             </div>
         </div>
     </section>
