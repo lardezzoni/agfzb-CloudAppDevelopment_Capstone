@@ -31,9 +31,54 @@ def AddReviewView(request):
     return render(request,'djangoapp/add_review.html', context)
 
 def DealerDetailsView(request):
-    context={}
+    if request.method == "GET":
+        dealer_id=15
+        url = "https://us-south.functions.appdomain.cloud/api/v1/web/f24bc0b4-325b-4601-a262-9b9454e6bfb0/dealership-package/get-review"
+        url_dealers = "https://us-south.functions.appdomain.cloud/api/v1/web/f24bc0b4-325b-4601-a262-9b9454e6bfb0/dealership-package/get-dealerships"
 
-    return render(request,'djangoapp/dealer_details.html', context)
+        # Get dealers from the URL
+        reviews= get_reviews_from_cf(url)
+        dealerships_list = get_dealers_from_cf(url_dealers)
+        # Concat all dealer's short name
+        context = dict()  
+        context['dealership_list']=dealerships_list
+        context["reviews"]= reviews
+        iterate_dict = dict()
+        iterate_dict["reviews"] = []
+
+        test = dict()
+        try:
+            for review in reviews:
+                print(review)
+                if dealer_id == review.dealership:
+                    
+                    print(type(review))
+                    #model_to_dict(review)
+                    
+                    iterate_dict["reviews"].append(review)
+                   
+
+
+            for dealer in dealerships_list:
+
+                if dealer_id == dealer.id:
+
+                    iterate_dict["id"] = dealer
+                    print(dealer.full_name)
+            
+            for iterate in iterate_dict["reviews"]:
+                print(iterate)
+            
+            #return HttpResponse(iterate_dict["id"])
+            return render(request, 'djangoapp/dealer_details.html', {'context':iterate_dict})
+
+
+
+        except:
+            if reviews == "Dealer don't exist":
+                return HttpResponse("Dealer don't exist")
+            else:
+                return render(request, 'djangoapp/dealer_details.html', context)
 
 def RegistrationView(request):
     context={}
