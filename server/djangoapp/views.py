@@ -11,7 +11,7 @@ from datetime import datetime
 from .restapis import get_request, get_reviews_from_cf, analyze_review_sentiments, post_request
 from .models import CarDealer, DealerReview
 from django.forms.models import model_to_dict
-
+from django.template import RequestContext
 import logging
 import json
 import requests
@@ -197,51 +197,62 @@ def get_dealer_details(request, dealer_id):
 # def add_review(request, dealer_id):
 # ...
 def add_review(request, dealer_id):
+    context = dict()
+    context["cars"] = []
+    context["dealership_name"] = {}
+    iterate_context = []
     if request.method == "GET":
 
         if request.user.is_authenticated:
             url="https://us-south.functions.appdomain.cloud/api/v1/web/f24bc0b4-325b-4601-a262-9b9454e6bfb0/dealership-package/post-review"
             url_dealer_exist ="https://us-south.functions.appdomain.cloud/api/v1/web/f24bc0b4-325b-4601-a262-9b9454e6bfb0/dealership-package/get-review"
-            reviews = get_dealer_details(request,dealer_id)
+            reviews = get_reviews_from_cf(url_dealer_exist)
+            url_dealers = "https://us-south.functions.appdomain.cloud/api/v1/web/f24bc0b4-325b-4601-a262-9b9454e6bfb0/dealership-package/get-dealerships"
 
+
+            dealerships_list = get_dealers_from_cf(url_dealers)
+            print("FIRST")
             if reviews == "Dealer don't exist" or reviews==None:
-                      json_payload = dict()
-                      json_payload["id"] = 999
-                      json_payload["name"]= "Berk"
-                      json_payload["dealership"] = dealer_id
-                      json_payload["review"] = "default"
-                      json_payload["purchase"] = True
-                      json_payload["purchase_date"]="00/00/0000"
-                      json_payload["car_make"]="Audi"
-                      json_payload["car_model"]="A10"
-                      json_payload["car_year"]="2000"
-                      review = {             
-                            "id": 998,
-                            "name": "Default, came from website url",
-                            "dealership": dealer_id,
-                            "review": "review",
-                            "purchase": "true",
-                            "purchase_date" : "07/11/2020",
-                            "car_make": "Audi",
-                            "car_model": "A7",
-                            "car_year": 2010
-                        }
-                      jsonreview = json.dumps(review)
-                      response = post_request(url, jsonreview)
-                      print(response)
-                      return HttpResponse(response)
+                for dealer in dealerships_list:
+                     context["cars"].append(dealer.id)
+                
+                print(context["cars"])
+                print("HERE5")
+                return render(request, 'djangoapp/add_review.html', context)
             else:
-              try:
-               for review in reviews:
-                   if dealer_id == review.dealership:
-                      print("dealer")
-                      return HttpResponse("dealer already exists")
-              except:
-                  print(reviews)
-                  return HttpResponse("all ok")
-        return HttpResponse("error")
+             for review in reviews:
+                if review.dealership == dealer_id:
+                    context["cars"].append(review)
+            for dealer in dealerships_list:
+                if dealer.id == dealer_id:
+                    context["dealership_name"]=dealer.full_name
+                    print("HERE 6666")
+                    break
+            print(context["dealership_name"])
+            render(request, 'djangoapp/add_review.html', context)
 
-            
+
+
+            try:
+                print(context["cars"])
+                print("HERE5")
+                return render(request, 'djangoapp/add_review.html', context)
+            except:
+                print("HERE2")
+                return render(request, 'djangoapp/add_review.html', context)
+    if request.method == "POST":
+        print("HERE")
+        values = extract_payload(request)
+
+        return HttpResponse(values)
+
+def extract_payload(request):
+   submitted_payload = []
+   for key in request.POST:
+           value = request.POST[key]
+           submitted_payload.append(value)
+   return submitted_payload       
+ 
 def get_test(request, **kwargs):
     if request.method == "GET":
         url = "https://api.us-east.natural-language-understanding.watson.cloud.ibm.com/instances/a9270a83-5bb9-41eb-969c-587796bf847d/v1/analyze?version=2019-07-12"
